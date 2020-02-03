@@ -1,0 +1,29 @@
+{
+  "name": "super-snake",
+  "version": "1.0.0",
+  "description": "Super-snake is a snake game clone.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toksaitov/super-snake.git"
+  },
+  "keywords": [
+    "snake",
+    "socket.io",
+    "express"
+  ],
+  "author": "Dmitrii Toksaitov <dmitrii@toksaitov.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toksaitov/super-snake/issues"
+  },
+  "homepage": "https://github.com/toksaitov/super-snake#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "type": "module"
+}
