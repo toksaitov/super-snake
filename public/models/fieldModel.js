@@ -1,10 +1,14 @@
 import AppleModel from './appleModel.js'
 
 export default class FieldModel {
+    static defaultFieldWidth = 100;
+    static defaultFieldHeight = 100;
+    static defaultFieldColor = 'white';
+
     constructor(width, height, color) {
-        this._width = width;
-        this._height = height;
-        this._color = color || 'white';
+        this._width  = width  || FieldModel.defaultFieldWidth;
+        this._height = height || FieldModel.defaultFieldHeight;
+        this._color  = color  || FieldModel.defaultFieldColor;
     }
 
     get width() {
@@ -23,12 +27,21 @@ export default class FieldModel {
         return this._apple;
     }
 
-    createApple(snake) {
-        this._apple = new AppleModel(this, snake);
+    createApple(snakes) {
+        this._apple = new AppleModel(this, snakes);
     }
 
     areCoordinatesInside(x, y) {
         return x >= 0 && x < this._width &&
                y >= 0 && y < this._height;
+    }
+
+    serialize() {
+        return {
+            'width': this._width,
+            'height': this._height,
+            'color': this._color,
+            'apple': this._apple.serialize()
+        }
     }
 }

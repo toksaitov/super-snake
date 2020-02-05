@@ -3,8 +3,8 @@ import AppleView from "./appleView.js";
 import DrawingHelpers from '../utilities/drawingHelpers.js';
 
 export default class FieldView {
-    static cellWidth  = 20;
-    static cellHeight = 20;
+    static cellWidth  = 5;
+    static cellHeight = 5;
     static centeringShiftX;
     static centeringShiftY;
     
