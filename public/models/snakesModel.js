@@ -29,7 +29,7 @@ export default class SnakesModel {
                 3,
                 this._field,
                 snake => {
-                    this._spawnPoints.unshift(snake.spawnPoints)
+                    this._spawnPoints.unshift(snake.spawnPoint)
                 }
             );
         

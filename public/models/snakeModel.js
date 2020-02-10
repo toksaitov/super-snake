@@ -118,14 +118,14 @@ export default class SnakeModel {
 
         if (!this._field.areCoordinatesInside(nextX, nextY) ||
              this.isCollidingWithBody(nextX, nextY)) {
-            this._isDead = true;
+            this.isDead = true;
 
             return;
         }
         
         const snakeWeCollidingWith = this.isCollidingWithSnakes(snakes);
         if (snakeWeCollidingWith) {
-            this._isDead = true;
+            this.isDead = true;
             snakeWeCollidingWith.isDead = true;
 
             return;
