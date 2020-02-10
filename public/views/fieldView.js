@@ -3,12 +3,17 @@ import AppleView from "./appleView.js";
 import DrawingHelpers from '../utilities/drawingHelpers.js';
 
 export default class FieldView {
-    static cellWidth  = 5;
-    static cellHeight = 5;
+    static cellScale = 0.75;
+    static cellWidth;
+    static cellHeight;
     static centeringShiftX;
     static centeringShiftY;
     
     static recalculateDrawingSizes(screenWidth, screenHeight, field) {
+        const cellSize = Math.min(screenWidth / field.width, screenHeight / field.height) * this.cellScale;
+        this.cellWidth = cellSize;
+        this.cellHeight = cellSize;
+
         const fieldPixelWidth = field.width * this.cellWidth;
         const fieldPixelHeight = field.height * this.cellWidth;
         this.centeringShiftX = (screenWidth - fieldPixelWidth) / 2;

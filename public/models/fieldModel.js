@@ -1,8 +1,8 @@
 import AppleModel from './appleModel.js'
 
 export default class FieldModel {
-    static defaultFieldWidth = 100;
-    static defaultFieldHeight = 100;
+    static defaultFieldWidth = 70;
+    static defaultFieldHeight = 70;
     static defaultFieldColor = 'white';
 
     constructor(width, height, color) {

@@ -1,16 +1,26 @@
 import State from './state.js';
 import GameOverState from './gameOverState.js';
+import DisconnectedState from './disconnectedState.js';
 
 import FieldModel from '../models/fieldModel.js';
-import SnakesView from '../views/snakesView.js';
 
 import FieldView from '../views/fieldView.js';
+import SnakesView from '../views/snakesView.js';
 
 import DrawingHelpers from '../utilities/drawingHelpers.js';
 
 export default class GameState extends State {
     constructor() {
         const socket = io();
+        socket.on('disconnect', reason => {
+            if (reason === 'io server disconnect') {
+                reason = 'The game room is full';
+            } else {
+                reason = 'Connection error';
+            }
+
+            state = new DisconnectedState(reason);
+        });
         
         socket.emit('spawn');
         socket.on('update', data => {
@@ -44,7 +54,6 @@ export default class GameState extends State {
 
         if (this._snake && this._snake.isDead) {
             state = new GameOverState();
-            this._socket.disconnect();
         }
 
         FieldView.recalculateDrawingSizes(screenWidth, screenHeight, this._field);

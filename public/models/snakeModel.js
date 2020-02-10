@@ -1,5 +1,5 @@
 export default class SnakeModel {
-    constructor(x, y, dx, dy, length, field) {
+    constructor(x, y, dx, dy, length, field, onDie) {
         this._body = [];
         for (let i = 0; i < length; ++i) {
             this._body.push({ x, y });
@@ -7,13 +7,18 @@ export default class SnakeModel {
         this._head = 0;
         this._dx = dx;
         this._dy = dy;
-        this._speed = 30; // [1..60]
+        this._speed = 55; // [1..60]
         this._moveRequestDivisor = Math.max(60 - this._speed, 1);
         this._moveRequestCount = 0;
         this._color = 'green';
         this._score = 0;
         this._field = field;
         this._isDead = false;
+        this._spawnPoint = {
+            'x': x, 'y': y,
+            'dx': dx, 'dy': dy
+        };
+        this._onDie = onDie;
     }
 
     get score() {
@@ -28,12 +33,24 @@ export default class SnakeModel {
         return this._color;
     }
 
+    set color(color) {
+        this._color = color;
+    }
+
     get isDead() {
         return this._isDead;
     }
 
     set isDead(isDead) {
         this._isDead = isDead;
+        this._color = 'gray';
+        if (this._onDie) {
+            this._onDie(this);
+        }
+    }
+
+    get spawnPoint() {
+        return this._spawnPoint;
     }
 
     turnUp() {
@@ -78,16 +95,16 @@ export default class SnakeModel {
         const head = this._body[this._head];
 
         for (const snake of Object.values(snakes.snakes)) {
-            if (snake === this) {
+            if (snake === this || snake.isDead) {
                 continue;
             }
 
             if (snake.isCollidingWithBody(head.x, head.y)) {
-                return true;
+                return snake;
             }
         }
 
-        return false;
+        return undefined;
     }
 
     move(snakes) {
@@ -100,10 +117,16 @@ export default class SnakeModel {
         let nextY = head.y + this._dy;
 
         if (!this._field.areCoordinatesInside(nextX, nextY) ||
-             this.isCollidingWithBody(nextX, nextY) ||
-             this.isCollidingWithSnakes(snakes)) {
+             this.isCollidingWithBody(nextX, nextY)) {
             this._isDead = true;
-            this._color = 'gray';
+
+            return;
+        }
+        
+        const snakeWeCollidingWith = this.isCollidingWithSnakes(snakes);
+        if (snakeWeCollidingWith) {
+            this._isDead = true;
+            snakeWeCollidingWith.isDead = true;
 
             return;
         }
